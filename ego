@@ -23,9 +23,28 @@ class color:
 	UNDERLINE = '\033[4m'
 	END = '\033[0m'
 
-ego_dir = "/usr/share/ego"
-ego_mods_dir = "%s/modules" % ego_dir
-ego_mods_info_dir = "%s/modules-info" % ego_dir
+ego_conf_dir="/etc/ego/"
+ego_conf_file_list=[]
+ego_conf_file_list.append(ego_conf_dir + "ego.conf")
+ego_conf_file_list.append(ego_conf_dir + "ego.yaml")
+ego_conf_file_list.append(ego_conf_dir + "ego.json")
+
+ego_conf_obj = ""
+for econffile in ego_conf_file_list:
+	if (os.path.exists(econffile)):
+		with open(econffile) as temp_econf:
+			ego_conf_obj = yaml.safe_load(temp_econf.read().replace("\t", " "))
+		break
+
+if (ego_conf_obj == ""):
+	ego_dir = "/usr/share/ego"
+	ego_mods_dir = "%s/modules" % ego_dir
+	ego_mods_info_dir = "%s/modules-info" % ego_dir
+else:
+	ego_dir = ego_conf_obj["ego_dir"]
+	ego_mods_dir = ego_conf_obj["ego_mods_dir"]
+	ego_mods_info_dir = ego_conf_obj["ego_mods_info_dir"]
+
 ego_mods = []
 ego_mods_info = {}
 
