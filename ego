@@ -6,7 +6,7 @@ Funtoo's personality tool
 """
 import os, sys
 import glob
-import json
+import yaml
 import subprocess
 
 VERSION = "1.0"
@@ -50,7 +50,7 @@ for mod in ego_mods:
 	inf_path = ego_mods_info_dir + "/" + mod + ".json"
 	if os.path.exists(inf_path):
 		with open(inf_path,"r") as inf:
-			ego_mods_info[mod] = json.loads(inf.read())
+			ego_mods_info[mod] = yaml.safe_load(inf.read().replace("\t", " "))
 
 if len(sys.argv) == 1 or ( len(sys.argv) == 2 and sys.argv[1] in [ "info", "help" ] ):
 	print("Usage: %s [module] [info|options]..." % os.path.basename(sys.argv[0]))
